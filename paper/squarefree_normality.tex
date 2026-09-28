@@ -1,0 +1,292 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=28mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,microtype}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{1.5em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\E}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\ind}{\mathbf 1}
+\title{Normality of squarefree-weighted series}
+\author{Stefan Ringer\thanks{AI tools (GPT 6 Astra and Fable 5.1)
+assisted with the development and checking of the proofs.}}
+\date{27 September 2026}
+\hypersetup{pdftitle={Normality of squarefree-weighted series},
+pdfauthor={Stefan Ringer},pdfsubject={Normality and discrepancy; Erdos Problem 259}}
+\begin{document}
+\maketitle
+
+Erd\H{o}s problem 259 \cite{E259} asks whether
+\[
+                         \sum_{n\ge1}\frac{n\mu(n)^2}{2^n}
+\]
+is irrational, where $\mu$ is the M\"obius function, so that $\mu(n)^2$
+is the indicator of squarefree integers. Chen and Ruzsa \cite{CR}
+proved this, including a stronger statement for infinite subseries.
+We establish normality of the full series and extend the result to every
+integer denominator base.
+
+A real number is normal to base $B$ if each word of $\ell$ digits occurs
+with limiting frequency $B^{-\ell}$. For $x_1,\ldots,x_M\in[0,1)$,
+write
+\[
+ D_M(x_1,\ldots,x_M)=
+ \sup_{0\le a<b\le1}
+ \left|\frac1M\#\{1\le n\le M:x_n\in[a,b)\}-(b-a)\right|.
+\]
+Here $\{x\}$ denotes the fractional part of $x$.
+We use $\ee(t)=\exp(2\pi it)$,
+$\|t\|=\operatorname{dist}(t,\mathbb Z)$, and $[t]_+=\max(t,0)$.
+All Fourier frequencies are integers, and logarithms are natural
+unless their base is indicated.
+
+\begin{theorem}\label{thm}
+For every fixed integer $B\ge2$, the number
+\[
+                    \alpha_B=\sum_{n\ge1}n\mu(n)^2B^{-n}
+\]
+is normal to base $B$, with
+\[
+                D_M((\{B^n\alpha_B\})_{n\le M})
+                                      \ll_B(\log\log M)^{-1}.
+\]
+\end{theorem}
+
+The base $B$ and the number $\alpha_B$ vary together; no assertion
+about absolute normality of a fixed $\alpha_B$ is made.
+The proof approximates squarefreeness by finitely many divisibility
+conditions. On each resulting residue class, the orbit phase is affine
+in its index. An average over integer frequencies controls the classes
+whose slopes are close to integers.
+
+Write $\vartheta(t)=\sum_{p\le t}\log p$ and
+$\pi(t)=\#\{p\le t:p\text{ prime}\}$.
+We use the standard consequences of the prime number theorem
+\begin{equation}\label{prime}
+ \vartheta(y)\sim y,\qquad
+ \sum_{p>z}p^{-2}\ll(z\log z)^{-1},\qquad
+ \pi(2z)-\pi(z)\gg z/\log z .
+\end{equation}
+
+\paragraph{A Fourier estimate for the periodic sieve.}
+For large $y$ put
+\[
+ Q=\prod_{p\le y}p^2,\quad s_y(n)=\prod_{p\le y}\ind_{p^2\nmid n},
+ \quad A_r=\sum_{j\ge1}s_y(r+j)B^{-j},\quad
+ \widehat\nu_y(m)=\frac1Q\sum_{r\bmod Q}\ee(mA_r).
+\]
+For an integer $L\ge1$ and a consecutive interval
+$W\subseteq\{1,\ldots,L\}$ set
+\[
+ E_W(m)=\sum_{j\in W}(1-\cos(2\pi mB^{-j})),\quad
+ Z_W=\sum_{p\le\min(\sqrt{2L},y)}\lceil |W|/p^2\rceil,\quad
+ V=\sum_{\sqrt{2L}<p\le y}p^{-2}.
+\]
+
+\begin{lemma}\label{crt}
+For every nonzero integer $m$,
+\[
+ |\widehat\nu_y(m)|
+ \le e^{-\frac12V[E_W(m)-2Z_W]_+}
+                 +LV^2+\frac{2\pi|m|}{B-1}B^{-L}.
+\]
+\end{lemma}
+\begin{proof}
+Take $r$ uniformly modulo $Q$ and truncate $A_r$ at $L$.
+The Chinese remainder theorem makes the residues $r\bmod p^2$
+independent and uniform. Condition on those for
+$p\le\min(\sqrt{2L},y)$, and let $u_j$ indicate that none of these
+prime squares divides $r+j$. At most $Z_W$ entries in $W$ vanish.
+For each remaining prime, at most one of the $L$ congruences
+$r+j\equiv0\pmod{p^2}$ holds. Each has probability $p^{-2}$;
+their complement has probability $1-L/p^2>1/2$.
+
+The probability that any position satisfies two such congruences is
+at most $LV^2/2$. In the products over these remaining primes, replacing
+$\prod_p(1-\ind_{p^2\mid r+j})$ by
+$1-\sum_p\ind_{p^2\mid r+j}$ is exact outside this event.
+The two resulting complex exponentials have modulus one, so their
+averages differ by at most $LV^2$.
+The latter average factors, up to a constant of modulus one, as
+a product of
+\[
+ w_p=1-L/p^2+p^{-2}\sum_{j\le L}\ee(-mu_jB^{-j}).
+\]
+For $\mathcal E_u=\sum_{j\le L}u_j(1-\cos(2\pi mB^{-j}))$,
+retaining the pairs involving the complementary outcome in the
+nonnegative pair expansion of $1-|w_p|^2$ gives
+$1-|w_p|^2\ge2(1-L/p^2)\mathcal E_u/p^2\ge\mathcal E_u/p^2$.
+Thus $|w_p|\le e^{-\mathcal E_u/(2p^2)}$.
+Since each summand in the energy lies between zero and two,
+$\mathcal E_u\ge[E_W(m)-2Z_W]_+$.
+Multiply these bounds, average over the conditioned residues, and add
+the truncation and replacement errors.
+\end{proof}
+
+\paragraph{Exact averaging in an arbitrary integer base.}
+For large $y$ set
+\[
+ \begin{gathered}
+ k=\lfloor y\rfloor,\quad J=B^k,\quad T=\lfloor(\log y)^2\rfloor,
+ \quad s=\lceil\log_2T\rceil+2,\\
+ L=k+\lceil\log_B(TQ)\rceil+\lceil3\log_B(y+2)\rceil,\qquad
+ W=\{s+1,\ldots,k\},\quad w=k-s .
+ \end{gathered}
+\]
+Here $s=o(k)$ and $W$ is nonempty eventually. More precisely,
+\[
+ \frac{w}{L}\longrightarrow\frac{\log B}{\log B+2}>0,
+ \qquad w\asymp_B L\asymp_B y.
+\]
+
+\begin{lemma}\label{average}
+For every fixed $B\ge2$, uniformly over $1\le|\xi|\le T$,
+\[
+                   \frac1J\sum_{h=1}^J|\widehat\nu_y(h\xi Q)|
+                                           \ll_B(\log y)^{-2}.
+\]
+\end{lemma}
+\begin{proof}
+Put $A=|\xi|Q$ and $g=\gcd(A,B^k)$.
+For sufficiently large $y$, all primes dividing $B$ are at most $y$,
+so $v_p(A)=v_p(|\xi|)+2\le\log_2 T+2\le s$ for each such prime.
+Consequently $g\mid B^s$.
+As $h$ runs from $1$ to $B^k$, $hA\bmod B^k$ is uniform over
+the multiples of $g$, each with multiplicity $g$.
+Conditional on a residue $r\bmod B^s$ with $0\le r<B^s$ and $g\mid r$, it is therefore
+\[
+           r+B^sU,\qquad U\text{ uniform on }\{0,\ldots,B^{k-s}-1\}.
+\]
+The $w$ higher digits are independent and uniform, even when $B$
+is composite and $(A,B)>1$.
+
+For every $s<j\le k$, the conditional mean of $\ee(hA/B^j)$ is zero,
+as $U$ traverses complete periods of a nontrivial character.
+Thus $\E(E_W(hA)\mid r)=w$.
+Changing a digit at position $i\ge s$ changes the energy by at most
+\[
+                   2\pi(B-1)\sum_{j>i}B^{i-j}\le2\pi .
+\]
+The Azuma--Hoeffding inequality in its bounded-differences form gives,
+for $a=19/20$,
+\[
+ \PP(E_W(hA)<aw\mid r)
+       \le\exp\left(-\frac{(1-a)^2w}{2\pi^2}\right)=e^{-w/(800\pi^2)}.
+\]
+This inequality follows by exposing the independent digits one at a time:
+the martingale increment has conditional range at most $2\pi$;
+Hoeffding's exponential estimate and Markov's inequality give the display.
+Average over $r$ to obtain the same bound without conditioning.
+
+The elementary numerical bound
+$\sigma=\sum_pp^{-2}\le\sum_{p\le53}p^{-2}+1/53<0.47$
+implies
+$Z_W\le\sigma w+\pi(\sqrt{2L})$.
+Since $a-2\sigma>1/100$, outside the exponentially small exceptional set,
+\[
+ E_W(hA)-2Z_W\ge(a-2\sigma)w-2\pi(\sqrt{2L})\ge \delta_B L .
+\]
+By \eqref{prime}, using
+$(\sqrt{2L},2\sqrt{2L}]\subseteq(\sqrt{2L},y]$ eventually,
+$V\asymp_B1/(\sqrt L\log L)$.
+Also $hA B^{-L}\le(y+2)^{-3}$.
+Lemma~\ref{crt} bounds the terms outside the exceptional set by
+$e^{-\delta'_B\sqrt y/\log y}+O_B((\log y)^{-2})$.
+On the exceptional set use $|\widehat\nu_y|\le1$.
+Its contribution is exponentially small in $w$.
+Conjugation handles negative $\xi$.
+\end{proof}
+
+\paragraph{From Fourier averages to discrepancy.}
+The nonnegative Fej\'er kernel
+\[
+ F_J(t)=1+2\sum_{h=1}^J(1-h/(J+1))\cos(2\pi ht)
+       =\frac1{J+1}\left(\frac{\sin(\pi(J+1)t)}{\sin(\pi t)}\right)^2
+\]
+is interpreted by continuity at integer $t$.
+It is at least $4(J+1)/\pi^2$ on $\|t\|\le1/(2(J+1))$.
+Thus Lemma~\ref{average} gives
+\begin{equation}\label{res}
+ \frac1Q\#\{r:\|\xi QA_r\|\le\eta\}\ll_B(\log y)^{-2}
+ \quad\left(0<\eta\le\frac1{2(J+1)},\ 1\le|\xi|\le T\right).
+\end{equation}
+Indeed, average the kernel over $r$, bound its nonconstant coefficients
+by their absolute values, and use the Fourier average above.
+
+\begin{proof}[Proof of Theorem~\ref{thm}]
+For integer $X$ let $N$ be uniform on $(X,2X]$, and put
+\[
+ c_B=\frac1{10(1+\log B)},\quad y=c_B\log X,\quad
+ H=\lceil4\log_BX\rceil,\quad \eta=\sqrt{Q/X},\quad Y=\log\log X .
+\]
+Define
+\[
+ D(N)=\sum_{j\ge1}(N+j)\mu(N+j)^2B^{-j},\qquad
+ D_y(N)=\sum_{j\ge1}(N+j)s_y(N+j)B^{-j}.
+\]
+Exactly $B^N\alpha_B-D(N)\in\mathbb Z$.
+An indicator difference within the first $H$ positions requires
+$p^2\mid N+j$ for some $p>y$, $j\le H$.
+Since $N+j<3X$, the exceptional fraction is at most
+\[
+ H\sum_{y<p\le\sqrt{3X}}(p^{-2}+X^{-1})\ll_B Y^{-1}.
+\]
+Outside this event, $|D(N)-D_y(N)|$ is at most
+\[
+ \tau_X=B^{-H}\left(\frac{2X+H}{B-1}
+                          +\frac{B}{(B-1)^2}\right)\ll_B X^{-3}.
+\]
+
+For $r=N\bmod Q$ the periodic approximation is
+$D_y(N)=NA_r+C_r$, with $C_r=\sum_{j\ge1}j s_y(r+j)B^{-j}$.
+Geometric summation in each progression $N=r+Qv$ gives
+\[
+ |\E\ee(\xi D_y(N))|
+ \ll\frac1Q\#\{r:\|\xi QA_r\|\le\eta\}
+                       +\frac{Q}{X\eta}+\frac QX .
+\]
+All parameters are compatible: \eqref{prime} gives
+\[
+ Q=X^{2c_B+o(1)},\quad J=X^{c_B\log B+o(1)},\quad
+ J\eta=X^{c_B(1+\log B)-1/2+o(1)}
+                           =X^{-2/5+o(1)}\longrightarrow0.
+\]
+Also $Q/(X\eta)=\sqrt{Q/X}\to0$ with a fixed power saving.
+Therefore \eqref{res} applies, uniformly for $1\le|\xi|\le T$.
+Since $T\asymp_B Y^2$, the Erd\H{o}s--Tur\'an inequality \cite{KN}
+gives the discrepancy of $\{D_y(N)\}$:
+\[
+ D_X^{\rm sieve}\ll_B T^{-1}
+       +\sum_{\xi=1}^T\frac{|\E\ee(\xi D_y(N))|}{\xi}
+                                    \ll_B\frac{\log Y}{Y^2}.
+\]
+Enlarging or shrinking each test interval by $\tau_X$ gives discrepancy
+$O_B(D_X^{\rm sieve}+\tau_X+Y^{-1})=O_B(Y^{-1})$
+for $\{D(N)\}$. Thus the exceptional fraction enters only once,
+after the Fourier estimate, rather than once per frequency.
+
+Finally decompose a prefix up to $M$ into dyadic blocks, discarding
+its first $O(\sqrt M)$ indices. On the remaining blocks
+$\log\log X=\log\log M+O(1)$; endpoint rounding costs
+$O(\log M/M)$. Weighted averaging proves the stated ordinary rate.
+Applying this to base-$B$ digit intervals proves normality.
+\end{proof}
+
+The constants and lower thresholds in these asymptotic estimates
+may depend on the fixed base $B$.
+
+\begin{thebibliography}{9}
+\bibitem{CR} Y.-G. Chen and I. Z. Ruzsa,
+\emph{On the irrationality of certain series},
+Period. Math. Hungar. \textbf{38} (1999), 31--37,
+\href{https://doi.org/10.1023/A:1004742930674}{doi:10.1023/A:1004742930674}.
+\bibitem{E259} T. F. Bloom, \emph{Erd\H{o}s Problem 259},
+\url{https://www.erdosproblems.com/259}.
+\bibitem{KN} L. Kuipers and H. Niederreiter,
+\emph{Uniform Distribution of Sequences}, Wiley, 1974.
+\end{thebibliography}
+\end{document}
